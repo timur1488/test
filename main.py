@@ -18,6 +18,12 @@ def parse_args():
 
 
 def run(args):
+    if not (3, 12) <= sys.version_info[:2] < (3, 15):
+        raise ValueError(
+            "Use Python 3.12 (supported: 3.12-3.14). Panda3D has no Windows "
+            "wheel for Python 3.15. In the game folder, run:\n"
+            "uv run --python 3.12 --with-requirements requirements.txt main.py"
+        )
     # Configure before initializing the engine. The headless renderer is only
     # used by the automated offscreen check, never forced during normal play.
     from panda3d.core import loadPrcFileData
@@ -367,6 +373,17 @@ def run(args):
 if __name__ == "__main__":
     try:
         run(parse_args())
+    except ModuleNotFoundError as exc:
+        if exc.name.split(".")[0] not in {"panda3d", "ursina", "PIL", "direct"}:
+            raise
+        print(
+            f"MiniCraft: missing dependency {exc.name!r} in {sys.executable}.\n"
+            "In the game folder, install dependencies and run with Python 3.12:\n"
+            "uv run --python 3.12 --with-requirements requirements.txt main.py\n"
+            "Or install requirements.txt using the same Python that runs the game.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
     except (ValueError, OSError) as exc:
         print(f"MiniCraft: {exc}", file=sys.stderr)
         sys.exit(1)

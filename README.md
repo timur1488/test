@@ -7,10 +7,25 @@
 
 ## Запуск
 
-Нужны **Python 3.12 или новее**, экран и графический драйвер с поддержкой OpenGL.
+Рекомендуется **Python 3.12**; зависимости поддерживают Python **3.12–3.14**.
+Для Python 3.15 у Panda3D пока нет готового пакета для Windows.
+Также нужны экран и графический драйвер с поддержкой OpenGL.
 Откройте терминал в папке проекта.
 
-**Windows:**
+**Быстрый запуск с uv (Windows / Linux / macOS):**
+
+Если установлен [uv](https://docs.astral.sh/uv/getting-started/installation/),
+выполните:
+
+```powershell
+uv run --python 3.12 --with-requirements requirements.txt main.py
+```
+
+uv выберет Python 3.12, при необходимости скачает его, установит зависимости
+в отдельное окружение и запустит игру. В Windows можно просто открыть
+`start.bat` двойным щелчком. При первом запуске нужен доступ к Интернету.
+
+**Windows без uv (с установленным Python 3.12):**
 
 ```powershell
 py -3.12 -m venv .venv
@@ -21,7 +36,7 @@ py -3.12 -m venv .venv
 **Linux / macOS:**
 
 ```bash
-python3 -m venv .venv
+python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 .venv/bin/python main.py
 ```
@@ -29,6 +44,14 @@ python3 -m venv .venv
 В подготовленном облачном окружении зависимости уже установлены в `.venv`.
 Для обычной игры нужен компьютер с экраном. Облачная проверка ниже работает
 без экрана и не открывает игровое окно.
+
+### Ошибка `No module named 'panda3d'`
+
+Игра запущена интерпретатором, в котором не установлены зависимости. Используйте
+команду с uv выше либо установите `requirements.txt` в `.venv` и запускайте
+именно `.venv\Scripts\python main.py` в Windows. В VS Code выберите этот же
+интерпретатор через **Python: Select Interpreter**. Запуск системным Python 3.15
+не использует зависимости, установленные в другом окружении.
 
 ## Управление
 
